@@ -1,0 +1,13 @@
+
+#set("content") {
+
+#for(trip in trips) {
+<p> #(trip.name) </p>
+}
+
+}
+
+
+#embed("base")
+
+

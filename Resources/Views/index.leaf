@@ -1,0 +1,5 @@
+#set("content") {
+#(message)
+}
+
+#embed("base")

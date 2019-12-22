@@ -1,20 +1,31 @@
 import Vapor
 
+struct WelcomeContext: Encodable {
+    var message: String
+}
+
+struct TripContext: Encodable {
+    var trips: [Trip]
+}
 /// Register your application's routes here.
 public func routes(_ router: Router) throws {
-    // Basic "It works" example
-    router.get { req in
-        return "It works!"
+
+    router.get("hello") { (request)  in
+        return try request.view().render("index")
     }
     
-    // Basic "Hello, world!" example
-    router.get("hello") { req in
-        return "Hello, world!"
+    router.get("welcome") { request -> Future<View> in
+        let context = WelcomeContext(message: "Welcome to leaf")
+        return try request.view().render("index",context)
+    }
+    
+    router.get("display-trips") { (request) -> Future<View> in
+        let trips = [Trip(name: "Nepal"),Trip(name: "India")]
+        let context = TripContext(trips: trips)
+        return try request.view().render("trip", context)
     }
 
-    // Example of configuring a controller
-    let todoController = TodoController()
-    router.get("todos", use: todoController.index)
-    router.post("todos", use: todoController.create)
-    router.delete("todos", Todo.parameter, use: todoController.delete)
+    
+
+
 }
